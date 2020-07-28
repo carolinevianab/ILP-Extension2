@@ -22,28 +22,6 @@ struct wordlist {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-//    let alfabeto = [1: "a",
-//                    2: "b",
-//                    2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//                     2: "b",
-//    ]
-    
     var backgroundScene: SKSpriteNode!
     var lblword: SKLabelNode!
     var hangman: SKSpriteNode!
@@ -67,6 +45,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     var data: [wordlist]!
     var choice: Int!
+    var guessedLetters: [String] = []
+    let states = [SKTexture(imageNamed: "0"), SKTexture(imageNamed: "1"), SKTexture(imageNamed: "2"), SKTexture(imageNamed: "3"), SKTexture(imageNamed: "4"), SKTexture(imageNamed: "5"), SKTexture(imageNamed: "6")]
+    var hangState = 0
 
     // MARK: didMove
     override func didMove(to view: SKView) {
@@ -164,21 +145,173 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: setupGame
     func setupGame(){
-        lblword.text = ""
+        lblword.text?.removeAll()
         let b = data.count
         choice = Int.random(in: 0...(b - 1))
         
         let a = data[choice].letterNumber
         
         var i = 0
+        var position = CGPoint(x: -369, y: 81)
+        var h = data[choice].word.startIndex
         while i < a {
-            lblword.text?.append("c")
+            //lblword.text?.append("_ ")
             i+=1
+            
+            let label = SKLabelNode(text: "_ ")
+            label.position = position
+            label.zPosition = 100
+            label.fontSize = 77
+            label.name = String(data[choice].word[h])
+            addChild(label)
+            position = CGPoint(x: position.x + 50, y: position.y)
+            h = data[choice].word.index(after: h)
         }
         
-        lblbnt1.text = String(UnicodeScalar(Int.random(in: 65...90))!)
+        var usedLetters: [Int] = []
+        var allRight = false
+        
+        var random: Int!
+        while !allRight {
+            random = Int.random(in: 65...90)
+            if usedLetters.contains(random) || guessedLetters.contains(String(UnicodeScalar(random)!)){
+                continue
+            }
+            
+            else {
+                if lblbnt1.text == "." {
+                    lblbnt1.text = String(UnicodeScalar(random)!)
+                    usedLetters.append(random)
+                }
+                else if lblbnt2.text == "." {
+                    lblbnt2.text = String(UnicodeScalar(random)!)
+                    usedLetters.append(random)
+                }
+                else if lblbnt3.text == "." {
+                    lblbnt3.text = String(UnicodeScalar(random)!)
+                    usedLetters.append(random)
+                }
+                else if lblbnt4.text == "." {
+                    lblbnt4.text = String(UnicodeScalar(random)!)
+                    usedLetters.append(random)
+                }
+                else if lblbnt5.text == "." {
+                    lblbnt5.text = String(UnicodeScalar(random)!)
+                    usedLetters.append(random)
+                }
+                else if lblbnt6.text == "." {
+                    lblbnt6.text = String(UnicodeScalar(random)!)
+                    usedLetters.append(random)
+                }
+                else {
+                    allRight = true
+                }
+            }
+        }
+        
+        
+        
+        
     }
     
+    
+    //MARK: ChangeChoices
+    func changeChoices(){
+        lblbnt1.text = "."
+        lblbnt2.text = "."
+        lblbnt3.text = "."
+        lblbnt4.text = "."
+        lblbnt5.text = "."
+        lblbnt6.text = "."
+        
+        var usedLetters: [Int] = []
+        var allRight = false
+        
+        var random: Int!
+        var wordDoesHave = false
+        while !allRight {
+            random = Int.random(in: 65...90)
+            if usedLetters.contains(random) || guessedLetters.contains(String(UnicodeScalar(random)!)){
+                continue
+            }
+            
+            else {
+                if lblbnt1.text == "." {
+                    lblbnt1.text = String(UnicodeScalar(random)!)
+                    usedLetters.append(random)
+                    if data[choice].word.contains(lblbnt1.text! as String){
+                        wordDoesHave = true
+                    }
+                }
+                else if lblbnt2.text == "." {
+                    lblbnt2.text = String(UnicodeScalar(random)!)
+                    usedLetters.append(random)
+                    if data[choice].word.contains(lblbnt2.text! as String){
+                        wordDoesHave = true
+                    }
+                }
+                else if lblbnt3.text == "." {
+                    lblbnt3.text = String(UnicodeScalar(random)!)
+                    usedLetters.append(random)
+                    if data[choice].word.contains(lblbnt3.text! as String){
+                        wordDoesHave = true
+                    }
+                }
+                else if lblbnt4.text == "." {
+                    lblbnt4.text = String(UnicodeScalar(random)!)
+                    usedLetters.append(random)
+                    if data[choice].word.contains(lblbnt4.text! as String){
+                        wordDoesHave = true
+                    }
+                }
+                else if lblbnt5.text == "." {
+                    lblbnt5.text = String(UnicodeScalar(random)!)
+                    usedLetters.append(random)
+                    if data[choice].word.contains(lblbnt5.text! as String){
+                        wordDoesHave = true
+                    }
+                }
+                else if lblbnt6.text == "." {
+                    lblbnt6.text = String(UnicodeScalar(random)!)
+                    usedLetters.append(random)
+                    if data[choice].word.contains(lblbnt6.text! as String){
+                        wordDoesHave = true
+                    }
+                }
+                else {
+                    allRight = true
+                }
+                if !wordDoesHave && (lblbnt1.text != "." && lblbnt2.text != "." && lblbnt3.text != "." && lblbnt4.text != "." && lblbnt5.text != "." && lblbnt6.text != "."){
+                    let a = data[choice].word.randomElement()
+                    let batata = Int.random(in: 1...6)
+                    switch batata {
+                    case 1:
+                        lblbnt1.text = String(a!)
+                        break
+                    case 2:
+                        lblbnt2.text = String(a!)
+                        break
+                    case 3:
+                        lblbnt3.text = String(a!)
+                        break
+                    case 4:
+                        lblbnt4.text = String(a!)
+                        break
+                    case 5:
+                        lblbnt5.text = String(a!)
+                        break
+                    case 6:
+                        lblbnt6.text = String(a!)
+                        break
+                    default:
+                        break
+                    }
+                }
+            }
+        }
+    }
+        
+        
     // MARK: touchesEnded
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touchLocal = CGPoint(x: 0, y: 0)
@@ -252,44 +385,82 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let firstNode = sortedNodes[0]
         let secondNode = sortedNodes[1]
         
-        //print(firstNode.name ?? "nope" as String, secondNode.name ?? "nope" as String)
-        
         if secondNode.name == "pinclet"{
             switch firstNode.name {
             case "bnt1":
-                if data[choice].word.contains((lblbnt1.text?.first)!) {
-                    print("vai filhao")
-//                    let str = lblbnt1.text! as String
-//                    let h = lblword.text?.firstIndex(of: (lblbnt1.text?.first)!)
-//                    let aaaaa = lblword.text?.replacingOccurrences(of: "c", with: str)
-//                    lblword.text?.replaceSubrange(h!...h!, with: str)
-//                    lblword.text = aaaaa
-                }
-                else{
-                    print("are ya winning son")
-                }
-                
-                
+                doShit(lblbnt1)
                 break
             case "bnt2":
-                print(lblbnt2.text! as String)
+                doShit(lblbnt2)
                 break
             case "bnt3":
-                print(lblbnt3.text! as String)
+                doShit(lblbnt3)
                 break
             case "bnt4":
-                print(lblbnt4.text! as String)
+                doShit(lblbnt4)
                 break
             case "bnt5":
-                print(lblbnt5.text! as String)
+                doShit(lblbnt5)
                 break
             case "bnt6":
-                print(lblbnt6.text! as String)
+                doShit(lblbnt6)
                 break
             default:
                 break
             }
+
         }
         
+    }
+    
+    func doShit(_ contacted: SKLabelNode){
+        if data[choice].word.contains((contacted.text?.first)!) {
+            print("vai filhao")
+            let str = contacted.text! as String
+            while childNode(withName: str) != nil {
+                let label = childNode(withName: str) as! SKLabelNode
+                label.text = str + " "
+                label.name = "0"
+            }
+            
+            var i = 0
+            var cor = 0
+            let t = children
+            while i < t.count {
+                
+                if t[i].name == "0" {
+                    cor += 1
+                }
+                i += 1
+            }
+            
+            if data[choice].letterNumber == cor {
+                let label = SKLabelNode(text: "you win")
+                label.position = CGPoint(x: 0, y: 0)
+                label.zPosition = 100
+                label.fontSize = 100
+                label.name = "winner"
+                removeAllChildren()
+                addChild(label)
+            }
+        }
+        else{
+            print("are ya winning son")
+            hangState += 1
+            hangman.texture = states[hangState]
+            
+            if hangState == 6 {
+                let label = SKLabelNode(text: "you lost")
+                label.position = CGPoint(x: 0, y: 0)
+                label.zPosition = 100
+                label.fontSize = 100
+                label.name = "loser"
+                removeAllChildren()
+                addChild(label)
+            }
+            
+        }
+        guessedLetters.append(contacted.text!)
+        changeChoices()
     }
 }

@@ -16,6 +16,8 @@
 		1017710524CF22A900930F8D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1017710324CF22A900930F8D /* LaunchScreen.storyboard */; };
 		1017711024CF22A900930F8D /* ILP_Extension2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1017710F24CF22A900930F8D /* ILP_Extension2Tests.swift */; };
 		1017711B24CF22A900930F8D /* ILP_Extension2UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1017711A24CF22A900930F8D /* ILP_Extension2UITests.swift */; };
+		101CF0AF24D0BD91003C7401 /* MainMenuScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 101CF0AE24D0BD91003C7401 /* MainMenuScene.sks */; };
+		101CF0B124D0BF0A003C7401 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101CF0B024D0BF0A003C7401 /* MainMenuScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,8 @@
 		1017711624CF22A900930F8D /* ILP-Extension2UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ILP-Extension2UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1017711A24CF22A900930F8D /* ILP_Extension2UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ILP_Extension2UITests.swift; sourceTree = "<group>"; };
 		1017711C24CF22A900930F8D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		101CF0AE24D0BD91003C7401 /* MainMenuScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenuScene.sks; sourceTree = "<group>"; };
+		101CF0B024D0BF0A003C7401 /* MainMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,13 +106,14 @@
 			isa = PBXGroup;
 			children = (
 				101770F424CF22A700930F8D /* AppDelegate.swift */,
-				101770F624CF22A700930F8D /* GameScene.sks */,
-				101770FA24CF22A700930F8D /* GameScene.swift */,
+				101CF0AD24D0BC94003C7401 /* Game */,
 				101770FC24CF22A700930F8D /* GameViewController.swift */,
 				101770FE24CF22A700930F8D /* Main.storyboard */,
 				1017710124CF22A900930F8D /* Assets.xcassets */,
 				1017710324CF22A900930F8D /* LaunchScreen.storyboard */,
 				1017710624CF22A900930F8D /* Info.plist */,
+				101CF0AE24D0BD91003C7401 /* MainMenuScene.sks */,
+				101CF0B024D0BF0A003C7401 /* MainMenuScene.swift */,
 			);
 			path = "ILP-Extension2";
 			sourceTree = "<group>";
@@ -129,6 +134,15 @@
 				1017711C24CF22A900930F8D /* Info.plist */,
 			);
 			path = "ILP-Extension2UITests";
+			sourceTree = "<group>";
+		};
+		101CF0AD24D0BC94003C7401 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				101770F624CF22A700930F8D /* GameScene.sks */,
+				101770FA24CF22A700930F8D /* GameScene.swift */,
+			);
+			path = Game;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,6 +253,7 @@
 				101770F724CF22A700930F8D /* GameScene.sks in Resources */,
 				1017710224CF22A900930F8D /* Assets.xcassets in Resources */,
 				1017710524CF22A900930F8D /* LaunchScreen.storyboard in Resources */,
+				101CF0AF24D0BD91003C7401 /* MainMenuScene.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,6 +280,7 @@
 			files = (
 				101770FB24CF22A700930F8D /* GameScene.swift in Sources */,
 				101770FD24CF22A700930F8D /* GameViewController.swift in Sources */,
+				101CF0B124D0BF0A003C7401 /* MainMenuScene.swift in Sources */,
 				101770F524CF22A700930F8D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
