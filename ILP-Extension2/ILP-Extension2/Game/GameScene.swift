@@ -23,12 +23,13 @@ struct wordlist {
 class GameScene: SKScene, SKPhysicsContactDelegate {
     let defalts = UserDefaults.standard
     
+    // Sprites
     var backgroundScene: SKSpriteNode!
     var lblword: SKLabelNode!
     var hangman: SKSpriteNode!
     let pinclet = SKSpriteNode(imageNamed: "pinclet")
-    var score = 0
     
+    // labels
     var lblbnt1: SKLabelNode!
     var lblbnt2: SKLabelNode!
     var lblbnt3: SKLabelNode!
@@ -37,6 +38,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var lblbnt6: SKLabelNode!
     var lblScore: SKLabelNode!
     
+    // buttons
     var bnt1: SKSpriteNode!
     var bnt2: SKSpriteNode!
     var bnt3: SKSpriteNode!
@@ -45,12 +47,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var bnt6: SKSpriteNode!
     
     var touchLocal = CGPoint(x: 0, y: 0)
-
+    var score = 0
     var data: [wordlist]!
     var choice: Int!
     var guessedLetters: [String] = []
-    let states = [SKTexture(imageNamed: "0"), SKTexture(imageNamed: "1"), SKTexture(imageNamed: "2"), SKTexture(imageNamed: "3"), SKTexture(imageNamed: "4"), SKTexture(imageNamed: "5"), SKTexture(imageNamed: "6")]
     var hangState = 0
+    
+    let states = [SKTexture(imageNamed: "0"), SKTexture(imageNamed: "1"), SKTexture(imageNamed: "2"), SKTexture(imageNamed: "3"), SKTexture(imageNamed: "4"), SKTexture(imageNamed: "5"), SKTexture(imageNamed: "6")]
+    
 
     // MARK: didMove
     override func didMove(to view: SKView) {
@@ -95,11 +99,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         ]
         
         setPhysics()
-        
         setupGame()
 
-       
-        
     }
     
     //MARK: setPhysics
@@ -159,7 +160,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var position = CGPoint(x: -369, y: 81)
         var h = data[choice].word.startIndex
         while i < a {
-            //lblword.text?.append("_ ")
             i+=1
             
             let label = SKLabelNode(text: "_ ")
@@ -172,49 +172,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             h = data[choice].word.index(after: h)
         }
         
-//        var usedLetters: [Int] = []
-//        var allRight = false
-//
-//        var random: Int!
-//        while !allRight {
-//            random = Int.random(in: 65...90)
-//            if usedLetters.contains(random) || guessedLetters.contains(String(UnicodeScalar(random)!)){
-//                continue
-//            }
-//
-//            else {
-//                if lblbnt1.text == "." {
-//                    lblbnt1.text = String(UnicodeScalar(random)!)
-//                    usedLetters.append(random)
-//                }
-//                else if lblbnt2.text == "." {
-//                    lblbnt2.text = String(UnicodeScalar(random)!)
-//                    usedLetters.append(random)
-//                }
-//                else if lblbnt3.text == "." {
-//                    lblbnt3.text = String(UnicodeScalar(random)!)
-//                    usedLetters.append(random)
-//                }
-//                else if lblbnt4.text == "." {
-//                    lblbnt4.text = String(UnicodeScalar(random)!)
-//                    usedLetters.append(random)
-//                }
-//                else if lblbnt5.text == "." {
-//                    lblbnt5.text = String(UnicodeScalar(random)!)
-//                    usedLetters.append(random)
-//                }
-//                else if lblbnt6.text == "." {
-//                    lblbnt6.text = String(UnicodeScalar(random)!)
-//                    usedLetters.append(random)
-//                }
-//                else {
-//                    allRight = true
-//                }
-//            }
-//        }
-        
-        logistics()
-        
+        defineLetters()
         
     }
     
@@ -228,96 +186,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         lblbnt5.text = "."
         lblbnt6.text = "."
         
-//        var usedLetters: [Int] = []
-//        var allRight = false
-//
-//        var random: Int!
-//        var wordDoesHave = false
-//        while !allRight {
-//            random = Int.random(in: 65...90)
-//            if usedLetters.contains(random) || guessedLetters.contains(String(UnicodeScalar(random)!)){
-//                continue
-//            }
-//
-//            else {
-//                if lblbnt1.text == "." {
-//                    lblbnt1.text = String(UnicodeScalar(random)!)
-//                    usedLetters.append(random)
-//                    if data[choice].word.contains(lblbnt1.text! as String){
-//                        wordDoesHave = true
-//                    }
-//                }
-//                else if lblbnt2.text == "." {
-//                    lblbnt2.text = String(UnicodeScalar(random)!)
-//                    usedLetters.append(random)
-//                    if data[choice].word.contains(lblbnt2.text! as String){
-//                        wordDoesHave = true
-//                    }
-//                }
-//                else if lblbnt3.text == "." {
-//                    lblbnt3.text = String(UnicodeScalar(random)!)
-//                    usedLetters.append(random)
-//                    if data[choice].word.contains(lblbnt3.text! as String){
-//                        wordDoesHave = true
-//                    }
-//                }
-//                else if lblbnt4.text == "." {
-//                    lblbnt4.text = String(UnicodeScalar(random)!)
-//                    usedLetters.append(random)
-//                    if data[choice].word.contains(lblbnt4.text! as String){
-//                        wordDoesHave = true
-//                    }
-//                }
-//                else if lblbnt5.text == "." {
-//                    lblbnt5.text = String(UnicodeScalar(random)!)
-//                    usedLetters.append(random)
-//                    if data[choice].word.contains(lblbnt5.text! as String){
-//                        wordDoesHave = true
-//                    }
-//                }
-//                else if lblbnt6.text == "." {
-//                    lblbnt6.text = String(UnicodeScalar(random)!)
-//                    usedLetters.append(random)
-//                    if data[choice].word.contains(lblbnt6.text! as String){
-//                        wordDoesHave = true
-//                    }
-//                }
-//                else {
-//                    allRight = true
-//                }
-//                if !wordDoesHave && (lblbnt1.text != "." && lblbnt2.text != "." && lblbnt3.text != "." && lblbnt4.text != "." && lblbnt5.text != "." && lblbnt6.text != "."){
-//                    let a = data[choice].word.randomElement()
-//                    let batata = Int.random(in: 1...6)
-//                    switch batata {
-//                    case 1:
-//                        lblbnt1.text = String(a!)
-//                        break
-//                    case 2:
-//                        lblbnt2.text = String(a!)
-//                        break
-//                    case 3:
-//                        lblbnt3.text = String(a!)
-//                        break
-//                    case 4:
-//                        lblbnt4.text = String(a!)
-//                        break
-//                    case 5:
-//                        lblbnt5.text = String(a!)
-//                        break
-//                    case 6:
-//                        lblbnt6.text = String(a!)
-//                        break
-//                    default:
-//                        break
-//                    }
-//                    guessedLetters.append(String(a!))
-//                }
-//            }
-//        }
-        logistics()
+        defineLetters()
     }
     
-    func logistics(){
+    //MARK: defineLetters
+    func defineLetters(){
         var usedLetters: [Int] = []
         var allRight = false
         
@@ -403,66 +276,49 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                         }
                         wordDoesHave = true
                     }
-                
                     allRight = true
                 }
             }
         }
     }
         
-        
     // MARK: touchesEnded
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         touchLocal = CGPoint(x: 0, y: 0)
     }
-    
     
     // MARK: touchesBegan
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else {return}
         touchLocal = touch.location(in: self)
         
-        let const: CGFloat = 150
-        
         if lblbnt1.contains(touchLocal) || bnt1.contains(touchLocal){
-            let duration = abs(Double((lblbnt1.position.x - pinclet.position.x) / const))
-            let run = SKAction.move(to: CGPoint(x: lblbnt1.position.x, y: pinclet.position.y), duration: duration)
-            let jump = SKAction.applyImpulse(CGVector(dx: 0, dy: 600), duration: 0.1)
-            pinclet.run(SKAction.sequence([run, jump]))
-            
+            movePinclet(lblbnt1)
         }
         if lblbnt2.contains(touchLocal) || bnt2.contains(touchLocal){
-            let duration = abs(Double((lblbnt2.position.x - pinclet.position.x) / const))
-            let run = SKAction.move(to: CGPoint(x: lblbnt2.position.x, y: pinclet.position.y), duration: duration)
-            let jump = SKAction.applyImpulse(CGVector(dx: 0, dy: 600), duration: 0.1)
-            pinclet.run(SKAction.sequence([run, jump]))
+            movePinclet(lblbnt2)
         }
         if lblbnt3.contains(touchLocal) || bnt3.contains(touchLocal){
-            let duration = abs(Double((lblbnt3.position.x - pinclet.position.x) / const))
-            let run = SKAction.move(to: CGPoint(x: lblbnt3.position.x, y: pinclet.position.y), duration: duration)
-            let jump = SKAction.applyImpulse(CGVector(dx: 0, dy: 600), duration: 0.1)
-            pinclet.run(SKAction.sequence([run, jump]))
+            movePinclet(lblbnt3)
         }
         if lblbnt4.contains(touchLocal) || bnt4.contains(touchLocal){
-            let duration = abs(Double((lblbnt4.position.x - pinclet.position.x) / const))
-            let run = SKAction.move(to: CGPoint(x: lblbnt4.position.x, y: pinclet.position.y), duration: duration)
-            let jump = SKAction.applyImpulse(CGVector(dx: 0, dy: 600), duration: 0.1)
-            pinclet.run(SKAction.sequence([run, jump]))
+            movePinclet(lblbnt4)
         }
         if lblbnt5.contains(touchLocal) || bnt5.contains(touchLocal){
-            let duration = abs(Double((lblbnt5.position.x - pinclet.position.x) / const))
-            let run = SKAction.move(to: CGPoint(x: lblbnt5.position.x, y: pinclet.position.y), duration: duration)
-            let jump = SKAction.applyImpulse(CGVector(dx: 0, dy: 600), duration: 0.1)
-            pinclet.run(SKAction.sequence([run, jump]))
+            movePinclet(lblbnt5)
         }
         if lblbnt6.contains(touchLocal) || bnt6.contains(touchLocal){
-            let duration = abs(Double((lblbnt6.position.x - pinclet.position.x) / const))
-            let run = SKAction.move(to: CGPoint(x: lblbnt6.position.x, y: pinclet.position.y), duration: duration)
-            let jump = SKAction.applyImpulse(CGVector(dx: 0, dy: 600), duration: 0.1)
-            pinclet.run(SKAction.sequence([run, jump]))
+            movePinclet(lblbnt6)
         }
     }
     
+    // MARK: movePinclet
+    func movePinclet(_ moveToLbl: SKLabelNode){
+        let duration = abs(Double((moveToLbl.position.x - pinclet.position.x) / 170))
+        let run = SKAction.move(to: CGPoint(x: moveToLbl.position.x, y: pinclet.position.y), duration: duration)
+        let jump = SKAction.applyImpulse(CGVector(dx: 0, dy: 600), duration: 0.1)
+        pinclet.run(SKAction.sequence([run, jump]))
+    }
     
     // MARK: update
     override func update(_ currentTime: TimeInterval) {
@@ -477,9 +333,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let sortedNodes = [nodeA, nodeB].sorted {$0.name ?? "" <  $1.name ?? ""}
         // Ordem alfabética:
         //Scene (literally)
-        //bnts
+        //bntX
+        //lblbntX
         //pinclet
-        //
         
         let firstNode = sortedNodes[0]
         let secondNode = sortedNodes[1]
@@ -487,46 +343,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if secondNode.name == "pinclet"{
             switch firstNode.name {
             case "bnt1":
-                doShit(lblbnt1)
-//                guessedLetters.append(lblbnt1.text!)
-//                changeChoices()
+                evaluate(lblbnt1)
                 break
             case "bnt2":
-                doShit(lblbnt2)
-//                guessedLetters.append(lblbnt2.text!)
-//                changeChoices()
+                evaluate(lblbnt2)
                 break
             case "bnt3":
-                doShit(lblbnt3)
-//                guessedLetters.append(lblbnt3.text!)
-//                changeChoices()
+                evaluate(lblbnt3)
                 break
             case "bnt4":
-                doShit(lblbnt4)
-//                guessedLetters.append(lblbnt4.text!)
-//                changeChoices()
+                evaluate(lblbnt4)
                 break
             case "bnt5":
-                doShit(lblbnt5)
-//                guessedLetters.append(lblbnt5.text!)
-//                changeChoices()
+                evaluate(lblbnt5)
                 break
             case "bnt6":
-                doShit(lblbnt6)
-//                guessedLetters.append(lblbnt6.text!)
-//                changeChoices()
+                evaluate(lblbnt6)
                 break
             default:
                 break
             }
-            
         }
         
     }
     
-    func doShit(_ contacted: SKLabelNode){
+    //MARK: evaluate
+    func evaluate(_ contacted: SKLabelNode){
         if data[choice].word.contains((contacted.text?.first)!) {
-            print("vai filhao")
             let str = contacted.text! as String
             while childNode(withName: str) != nil {
                 let label = childNode(withName: str) as! SKLabelNode
@@ -535,66 +378,56 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 score += 5
             }
             
-            var i = 0
-            var cor = 0
-            let t = children
-            while i < t.count {
-                
-                if t[i].name == "0" {
-                    cor += 1
+            var index = 0
+            var guessed = 0
+            let allChildren = children
+            while index < allChildren.count {
+                if allChildren[index].name == "0" {
+                    guessed += 1
                 }
-                i += 1
+                index += 1
             }
-            
-            if data[choice].letterNumber == cor {
-                let label = SKLabelNode(text: "you win")
-                label.position = CGPoint(x: 0, y: 0)
-                label.zPosition = 100
-                label.fontSize = 100
-                label.name = "winner"
-                removeAllChildren()
-                
-                defalts.set(score, forKey: "Score")
+            if data[choice].letterNumber == guessed {
                 score += 10
-                
-                let transition = SKTransition.flipHorizontal(withDuration: 0.5)
-                let intoGame = GameScene(fileNamed: "MainMenuScene") ?? GameScene(size: self.size)
-                intoGame.addChild(label)
-                self.view?.presentScene(intoGame, transition: transition)
+                endGame("You won!")
             }
             else {
                 guessedLetters.append(contacted.text!)
                 changeChoices()
             }
         }
-        else{
-            print("are ya winning son")
+        else {
             hangState += 1
             hangman.texture = states[hangState]
+            hangman.color = .white
+            hangman.blendMode = .add
+            hangman.colorBlendFactor = 0.9
             score -= 7
-            
             if hangState == 6 {
-                let label = SKLabelNode(text: "you lost")
-                label.position = CGPoint(x: 0, y: 0)
-                label.zPosition = 100
-                label.fontSize = 100
-                label.name = "loser"
-                removeAllChildren()
-                defalts.set(score, forKey: "Score")
-                let transition = SKTransition.flipHorizontal(withDuration: 0.5)
-                let intoGame = GameScene(fileNamed: "MainMenuScene") ?? GameScene(size: self.size)
-                intoGame.addChild(label)
-                self.view?.presentScene(intoGame, transition: transition)
-                
-                
+                endGame("You lost")
             }
-            else{
+            else {
                 guessedLetters.append(contacted.text!)
                 changeChoices()
             }
             
         }
-        //guessedLetters.append(contacted.text!)
         
+    }
+    
+    //MARK: endGame
+    func endGame(_ GameStatus: String){
+        let label = SKLabelNode(text: GameStatus)
+        label.position = CGPoint(x: 200, y: -100)
+        label.zPosition = 100
+        label.fontSize = 100
+        label.fontName = "Helvetica Neue"
+        label.name = "State"
+        removeAllChildren()
+        defalts.set(score, forKey: "Score")
+        let transition = SKTransition.flipHorizontal(withDuration: 0.5)
+        let intoGame = GameScene(fileNamed: "MainMenuScene") ?? GameScene(size: self.size)
+        intoGame.addChild(label)
+        self.view?.presentScene(intoGame, transition: transition)
     }
 }
