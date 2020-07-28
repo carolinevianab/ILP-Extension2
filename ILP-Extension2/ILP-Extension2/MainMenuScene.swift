@@ -9,12 +9,17 @@
 import SpriteKit
 
 class MainMenuScene: SKScene {
-
+    let defalts = UserDefaults.standard
+    
     var bntStart: SKLabelNode!
+    var score: SKLabelNode!
     var touchLocal = CGPoint(x: 0, y: 0)
     
     override func didMove(to view: SKView) {
         bntStart = (self.childNode(withName: "StartGame") as! SKLabelNode)
+        score = (self.childNode(withName: "Score") as! SKLabelNode)
+        
+        score.text = "Last Score: " + String(defalts.integer(forKey: "Score"))
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

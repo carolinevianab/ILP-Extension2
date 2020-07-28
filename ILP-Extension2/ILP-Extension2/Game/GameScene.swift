@@ -21,11 +21,13 @@ struct wordlist {
 
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
+    let defalts = UserDefaults.standard
     
     var backgroundScene: SKSpriteNode!
     var lblword: SKLabelNode!
     var hangman: SKSpriteNode!
     let pinclet = SKSpriteNode(imageNamed: "pinclet")
+    var score = 0
     
     var lblbnt1: SKLabelNode!
     var lblbnt2: SKLabelNode!
@@ -33,6 +35,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var lblbnt4: SKLabelNode!
     var lblbnt5: SKLabelNode!
     var lblbnt6: SKLabelNode!
+    var lblScore: SKLabelNode!
     
     var bnt1: SKSpriteNode!
     var bnt2: SKSpriteNode!
@@ -62,6 +65,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         lblbnt4 = (self.childNode(withName: "lblbnt4") as! SKLabelNode)
         lblbnt5 = (self.childNode(withName: "lblbnt5") as! SKLabelNode)
         lblbnt6 = (self.childNode(withName: "lblbnt6") as! SKLabelNode)
+        lblScore = (self.childNode(withName: "lblScore") as! SKLabelNode)
         
         bnt1 = (self.childNode(withName: "bnt1") as! SKSpriteNode)
         bnt2 = (self.childNode(withName: "bnt2") as! SKSpriteNode)
@@ -168,48 +172,48 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             h = data[choice].word.index(after: h)
         }
         
-        var usedLetters: [Int] = []
-        var allRight = false
+//        var usedLetters: [Int] = []
+//        var allRight = false
+//
+//        var random: Int!
+//        while !allRight {
+//            random = Int.random(in: 65...90)
+//            if usedLetters.contains(random) || guessedLetters.contains(String(UnicodeScalar(random)!)){
+//                continue
+//            }
+//
+//            else {
+//                if lblbnt1.text == "." {
+//                    lblbnt1.text = String(UnicodeScalar(random)!)
+//                    usedLetters.append(random)
+//                }
+//                else if lblbnt2.text == "." {
+//                    lblbnt2.text = String(UnicodeScalar(random)!)
+//                    usedLetters.append(random)
+//                }
+//                else if lblbnt3.text == "." {
+//                    lblbnt3.text = String(UnicodeScalar(random)!)
+//                    usedLetters.append(random)
+//                }
+//                else if lblbnt4.text == "." {
+//                    lblbnt4.text = String(UnicodeScalar(random)!)
+//                    usedLetters.append(random)
+//                }
+//                else if lblbnt5.text == "." {
+//                    lblbnt5.text = String(UnicodeScalar(random)!)
+//                    usedLetters.append(random)
+//                }
+//                else if lblbnt6.text == "." {
+//                    lblbnt6.text = String(UnicodeScalar(random)!)
+//                    usedLetters.append(random)
+//                }
+//                else {
+//                    allRight = true
+//                }
+//            }
+//        }
         
-        var random: Int!
-        while !allRight {
-            random = Int.random(in: 65...90)
-            if usedLetters.contains(random) || guessedLetters.contains(String(UnicodeScalar(random)!)){
-                continue
-            }
-            
-            else {
-                if lblbnt1.text == "." {
-                    lblbnt1.text = String(UnicodeScalar(random)!)
-                    usedLetters.append(random)
-                }
-                else if lblbnt2.text == "." {
-                    lblbnt2.text = String(UnicodeScalar(random)!)
-                    usedLetters.append(random)
-                }
-                else if lblbnt3.text == "." {
-                    lblbnt3.text = String(UnicodeScalar(random)!)
-                    usedLetters.append(random)
-                }
-                else if lblbnt4.text == "." {
-                    lblbnt4.text = String(UnicodeScalar(random)!)
-                    usedLetters.append(random)
-                }
-                else if lblbnt5.text == "." {
-                    lblbnt5.text = String(UnicodeScalar(random)!)
-                    usedLetters.append(random)
-                }
-                else if lblbnt6.text == "." {
-                    lblbnt6.text = String(UnicodeScalar(random)!)
-                    usedLetters.append(random)
-                }
-                else {
-                    allRight = true
-                }
-            }
-        }
-        
-        
+        logistics()
         
         
     }
@@ -224,6 +228,96 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         lblbnt5.text = "."
         lblbnt6.text = "."
         
+//        var usedLetters: [Int] = []
+//        var allRight = false
+//
+//        var random: Int!
+//        var wordDoesHave = false
+//        while !allRight {
+//            random = Int.random(in: 65...90)
+//            if usedLetters.contains(random) || guessedLetters.contains(String(UnicodeScalar(random)!)){
+//                continue
+//            }
+//
+//            else {
+//                if lblbnt1.text == "." {
+//                    lblbnt1.text = String(UnicodeScalar(random)!)
+//                    usedLetters.append(random)
+//                    if data[choice].word.contains(lblbnt1.text! as String){
+//                        wordDoesHave = true
+//                    }
+//                }
+//                else if lblbnt2.text == "." {
+//                    lblbnt2.text = String(UnicodeScalar(random)!)
+//                    usedLetters.append(random)
+//                    if data[choice].word.contains(lblbnt2.text! as String){
+//                        wordDoesHave = true
+//                    }
+//                }
+//                else if lblbnt3.text == "." {
+//                    lblbnt3.text = String(UnicodeScalar(random)!)
+//                    usedLetters.append(random)
+//                    if data[choice].word.contains(lblbnt3.text! as String){
+//                        wordDoesHave = true
+//                    }
+//                }
+//                else if lblbnt4.text == "." {
+//                    lblbnt4.text = String(UnicodeScalar(random)!)
+//                    usedLetters.append(random)
+//                    if data[choice].word.contains(lblbnt4.text! as String){
+//                        wordDoesHave = true
+//                    }
+//                }
+//                else if lblbnt5.text == "." {
+//                    lblbnt5.text = String(UnicodeScalar(random)!)
+//                    usedLetters.append(random)
+//                    if data[choice].word.contains(lblbnt5.text! as String){
+//                        wordDoesHave = true
+//                    }
+//                }
+//                else if lblbnt6.text == "." {
+//                    lblbnt6.text = String(UnicodeScalar(random)!)
+//                    usedLetters.append(random)
+//                    if data[choice].word.contains(lblbnt6.text! as String){
+//                        wordDoesHave = true
+//                    }
+//                }
+//                else {
+//                    allRight = true
+//                }
+//                if !wordDoesHave && (lblbnt1.text != "." && lblbnt2.text != "." && lblbnt3.text != "." && lblbnt4.text != "." && lblbnt5.text != "." && lblbnt6.text != "."){
+//                    let a = data[choice].word.randomElement()
+//                    let batata = Int.random(in: 1...6)
+//                    switch batata {
+//                    case 1:
+//                        lblbnt1.text = String(a!)
+//                        break
+//                    case 2:
+//                        lblbnt2.text = String(a!)
+//                        break
+//                    case 3:
+//                        lblbnt3.text = String(a!)
+//                        break
+//                    case 4:
+//                        lblbnt4.text = String(a!)
+//                        break
+//                    case 5:
+//                        lblbnt5.text = String(a!)
+//                        break
+//                    case 6:
+//                        lblbnt6.text = String(a!)
+//                        break
+//                    default:
+//                        break
+//                    }
+//                    guessedLetters.append(String(a!))
+//                }
+//            }
+//        }
+        logistics()
+    }
+    
+    func logistics(){
         var usedLetters: [Int] = []
         var allRight = false
         
@@ -234,8 +328,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if usedLetters.contains(random) || guessedLetters.contains(String(UnicodeScalar(random)!)){
                 continue
             }
-            
-            else {
+            else if  !usedLetters.contains(random) || !guessedLetters.contains(String(UnicodeScalar(random)!)) {
                 if lblbnt1.text == "." {
                     lblbnt1.text = String(UnicodeScalar(random)!)
                     usedLetters.append(random)
@@ -281,31 +374,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 else {
                     allRight = true
                 }
-                if !wordDoesHave && (lblbnt1.text != "." && lblbnt2.text != "." && lblbnt3.text != "." && lblbnt4.text != "." && lblbnt5.text != "." && lblbnt6.text != "."){
+                while !wordDoesHave && (lblbnt1.text != "." && lblbnt2.text != "." && lblbnt3.text != "." && lblbnt4.text != "." && lblbnt5.text != "." && lblbnt6.text != "."){
                     let a = data[choice].word.randomElement()
                     let batata = Int.random(in: 1...6)
-                    switch batata {
-                    case 1:
-                        lblbnt1.text = String(a!)
-                        break
-                    case 2:
-                        lblbnt2.text = String(a!)
-                        break
-                    case 3:
-                        lblbnt3.text = String(a!)
-                        break
-                    case 4:
-                        lblbnt4.text = String(a!)
-                        break
-                    case 5:
-                        lblbnt5.text = String(a!)
-                        break
-                    case 6:
-                        lblbnt6.text = String(a!)
-                        break
-                    default:
-                        break
+                    
+                    if !guessedLetters.contains(String(a!)) {
+                        switch batata {
+                        case 1:
+                            lblbnt1.text = String(a!)
+                            break
+                        case 2:
+                            lblbnt2.text = String(a!)
+                            break
+                        case 3:
+                            lblbnt3.text = String(a!)
+                            break
+                        case 4:
+                            lblbnt4.text = String(a!)
+                            break
+                        case 5:
+                            lblbnt5.text = String(a!)
+                            break
+                        case 6:
+                            lblbnt6.text = String(a!)
+                            break
+                        default:
+                            break
+                        }
+                        wordDoesHave = true
                     }
+                
+                    allRight = true
                 }
             }
         }
@@ -367,7 +466,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: update
     override func update(_ currentTime: TimeInterval) {
-    
+        lblScore.text = "Score: " + String(score)
     }
     
     // MARK: didBegin
@@ -389,26 +488,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             switch firstNode.name {
             case "bnt1":
                 doShit(lblbnt1)
+//                guessedLetters.append(lblbnt1.text!)
+//                changeChoices()
                 break
             case "bnt2":
                 doShit(lblbnt2)
+//                guessedLetters.append(lblbnt2.text!)
+//                changeChoices()
                 break
             case "bnt3":
                 doShit(lblbnt3)
+//                guessedLetters.append(lblbnt3.text!)
+//                changeChoices()
                 break
             case "bnt4":
                 doShit(lblbnt4)
+//                guessedLetters.append(lblbnt4.text!)
+//                changeChoices()
                 break
             case "bnt5":
                 doShit(lblbnt5)
+//                guessedLetters.append(lblbnt5.text!)
+//                changeChoices()
                 break
             case "bnt6":
                 doShit(lblbnt6)
+//                guessedLetters.append(lblbnt6.text!)
+//                changeChoices()
                 break
             default:
                 break
             }
-
+            
         }
         
     }
@@ -421,6 +532,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let label = childNode(withName: str) as! SKLabelNode
                 label.text = str + " "
                 label.name = "0"
+                score += 5
             }
             
             var i = 0
@@ -441,13 +553,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 label.fontSize = 100
                 label.name = "winner"
                 removeAllChildren()
-                addChild(label)
+                
+                defalts.set(score, forKey: "Score")
+                score += 10
+                
+                let transition = SKTransition.flipHorizontal(withDuration: 0.5)
+                let intoGame = GameScene(fileNamed: "MainMenuScene") ?? GameScene(size: self.size)
+                intoGame.addChild(label)
+                self.view?.presentScene(intoGame, transition: transition)
+            }
+            else {
+                guessedLetters.append(contacted.text!)
+                changeChoices()
             }
         }
         else{
             print("are ya winning son")
             hangState += 1
             hangman.texture = states[hangState]
+            score -= 7
             
             if hangState == 6 {
                 let label = SKLabelNode(text: "you lost")
@@ -456,11 +580,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 label.fontSize = 100
                 label.name = "loser"
                 removeAllChildren()
-                addChild(label)
+                defalts.set(score, forKey: "Score")
+                let transition = SKTransition.flipHorizontal(withDuration: 0.5)
+                let intoGame = GameScene(fileNamed: "MainMenuScene") ?? GameScene(size: self.size)
+                intoGame.addChild(label)
+                self.view?.presentScene(intoGame, transition: transition)
+                
+                
+            }
+            else{
+                guessedLetters.append(contacted.text!)
+                changeChoices()
             }
             
         }
-        guessedLetters.append(contacted.text!)
-        changeChoices()
+        //guessedLetters.append(contacted.text!)
+        
     }
 }
