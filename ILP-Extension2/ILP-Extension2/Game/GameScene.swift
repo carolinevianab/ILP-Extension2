@@ -25,9 +25,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // Sprites
     var backgroundScene: SKSpriteNode!
-    var lblword: SKLabelNode!
     var hangman: SKSpriteNode!
     let pinclet = SKSpriteNode(imageNamed: "pinclet")
+    let exitPortal = SKSpriteNode(imageNamed: "exitPortal")
     
     // labels
     var lblbnt1: SKLabelNode!
@@ -37,6 +37,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var lblbnt5: SKLabelNode!
     var lblbnt6: SKLabelNode!
     var lblScore: SKLabelNode!
+    var lblGuessed: SKLabelNode!
     
     // buttons
     var bnt1: SKSpriteNode!
@@ -52,6 +53,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var choice: Int!
     var guessedLetters: [String] = []
     var hangState = 0
+    var portal = false
     
     let states = [SKTexture(imageNamed: "0"), SKTexture(imageNamed: "1"), SKTexture(imageNamed: "2"), SKTexture(imageNamed: "3"), SKTexture(imageNamed: "4"), SKTexture(imageNamed: "5"), SKTexture(imageNamed: "6")]
     
@@ -61,7 +63,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         
         backgroundScene = (self.childNode(withName: "background") as! SKSpriteNode)
-        lblword = (self.childNode(withName: "word") as! SKLabelNode)
         hangman = (self.childNode(withName: "hangman") as! SKSpriteNode)
         lblbnt1 = (self.childNode(withName: "lblbnt1") as! SKLabelNode)
         lblbnt2 = (self.childNode(withName: "lblbnt2") as! SKLabelNode)
@@ -70,6 +71,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         lblbnt5 = (self.childNode(withName: "lblbnt5") as! SKLabelNode)
         lblbnt6 = (self.childNode(withName: "lblbnt6") as! SKLabelNode)
         lblScore = (self.childNode(withName: "lblScore") as! SKLabelNode)
+        lblGuessed = (self.childNode(withName: "letterGuessed") as! SKLabelNode)
         
         bnt1 = (self.childNode(withName: "bnt1") as! SKSpriteNode)
         bnt2 = (self.childNode(withName: "bnt2") as! SKSpriteNode)
@@ -78,10 +80,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bnt5 = (self.childNode(withName: "bnt5") as! SKSpriteNode)
         bnt6 = (self.childNode(withName: "bnt6") as! SKSpriteNode)
         
-        physicsBody = SKPhysicsBody(edgeLoopFrom: frame.inset(by: UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)))
+        physicsBody = SKPhysicsBody(edgeLoopFrom: frame.inset(by: UIEdgeInsets(top: 30, left: 0, bottom: frame.minY - 150, right: 0)))
         
         pinclet.size = CGSize(width: pinclet.size.width / 1.5, height: pinclet.size.height / 1.5)
-        pinclet.position = CGPoint(x: 0, y: 0)
+        pinclet.position = CGPoint(x: 0, y: -115)
         pinclet.zPosition = 3
         pinclet.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: pinclet.size.width / 2, height: pinclet.size.height / 1.2))
         pinclet.physicsBody?.categoryBitMask = CollisionType.pinclet.rawValue
@@ -94,8 +96,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(pinclet)
         
         
-         data = [wordlist(word: "BATATA", letterNumber: 6),
-                 wordlist(word: "CENOURA", letterNumber: 7)
+         data = [wordlist(word: "APARTMENT", letterNumber: 9),//1
+                 wordlist(word: "AIRPLANE", letterNumber: 8),//2
+                 wordlist(word: "RESTAURANT", letterNumber: 10),//3
+                 wordlist(word: "SCHOOL", letterNumber: 6),//4
+                 wordlist(word: "LIBRARY", letterNumber: 7),//5
+                 wordlist(word: "HOSPITAL", letterNumber: 8),//6
+                 wordlist(word: "ORANGE", letterNumber: 6),//7
+                 wordlist(word: "APPLE", letterNumber: 5),//8
+                 wordlist(word: "LEMON", letterNumber: 5),//9
+                 wordlist(word: "KNIFE", letterNumber: 5),//10
+                 wordlist(word: "BREAKFAST", letterNumber: 9),//11
+                 wordlist(word: "NEIGHBOR", letterNumber: 8),//12
+                 wordlist(word: "BATHROOM", letterNumber: 8),//13
+                 wordlist(word: "CEILING", letterNumber: 7),//14
+                 wordlist(word: "TELEPHONE", letterNumber: 9),//15
+                 wordlist(word: "NEEDLE", letterNumber: 6),//16
+                 wordlist(word: "TELEVISION", letterNumber: 10),//17
+                 wordlist(word: "SEPTEMBER", letterNumber: 9),//18
+                 wordlist(word: "AWKWARD", letterNumber: 7),//19
+                 wordlist(word: "CYCLE", letterNumber: 5),//20
+                 wordlist(word: "GALAXY", letterNumber: 6),//21
+                 wordlist(word: "MICROWAVE", letterNumber: 9),//22
+                 wordlist(word: "KEYHOLE", letterNumber: 7),//23
+                 wordlist(word: "AVENUE", letterNumber: 6),//24
+                 wordlist(word: "FOX", letterNumber: 3),//25
+                 wordlist(word: "PLAY", letterNumber: 4),//26
+                 wordlist(word: "NOTEBOOK", letterNumber: 8),//27
+                 wordlist(word: "PINEAPPLE", letterNumber: 9),//28
+                 wordlist(word: "CAKE", letterNumber: 4),//29
+                 wordlist(word: "TABLE", letterNumber: 5),//30
+            
         ]
         
         setPhysics()
@@ -150,14 +181,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // MARK: setupGame
     func setupGame(){
-        lblword.text?.removeAll()
         let b = data.count
         choice = Int.random(in: 0...(b - 1))
         
         let a = data[choice].letterNumber
         
         var i = 0
-        var position = CGPoint(x: -369, y: 81)
+        var position = CGPoint(x: -375, y: 81)
         var h = data[choice].word.startIndex
         while i < a {
             i+=1
@@ -310,6 +340,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if lblbnt6.contains(touchLocal) || bnt6.contains(touchLocal){
             movePinclet(lblbnt6)
         }
+        if exitPortal.contains(touchLocal){
+            let duration = abs(Double((exitPortal.position.x - pinclet.position.x) / 170))
+            let run = SKAction.move(to: CGPoint(x: exitPortal.position.x, y: pinclet.position.y), duration: duration)
+            pinclet.run(run)
+        }
     }
     
     // MARK: movePinclet
@@ -323,6 +358,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // MARK: update
     override func update(_ currentTime: TimeInterval) {
         lblScore.text = "Score: " + String(score)
+        
     }
     
     // MARK: didBegin
@@ -341,27 +377,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let secondNode = sortedNodes[1]
         
         if secondNode.name == "pinclet"{
-            switch firstNode.name {
-            case "bnt1":
-                evaluate(lblbnt1)
-                break
-            case "bnt2":
-                evaluate(lblbnt2)
-                break
-            case "bnt3":
-                evaluate(lblbnt3)
-                break
-            case "bnt4":
-                evaluate(lblbnt4)
-                break
-            case "bnt5":
-                evaluate(lblbnt5)
-                break
-            case "bnt6":
-                evaluate(lblbnt6)
-                break
-            default:
-                break
+            if !portal {
+                switch firstNode.name {
+                case "bnt1":
+                    evaluate(lblbnt1)
+                    break
+                case "bnt2":
+                    evaluate(lblbnt2)
+                    break
+                case "bnt3":
+                    evaluate(lblbnt3)
+                    break
+                case "bnt4":
+                    evaluate(lblbnt4)
+                    break
+                case "bnt5":
+                    evaluate(lblbnt5)
+                    break
+                case "bnt6":
+                    evaluate(lblbnt6)
+                    break
+                default:
+                    break
+                }
+            }
+            
+            if firstNode.name == "exit" && hangState != 6 {
+                endGame("You won!")
+            }
+            else if firstNode.name == "exit" && hangState == 6 {
+                endGame("You lost")
             }
         }
         
@@ -387,9 +432,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
                 index += 1
             }
-            if data[choice].letterNumber == guessed {
+            if data[choice].letterNumber == guessed && !portal {
                 score += 10
-                endGame("You won!")
+                generatePortal()
+                
+                
             }
             else {
                 guessedLetters.append(contacted.text!)
@@ -403,16 +450,55 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             hangman.blendMode = .add
             hangman.colorBlendFactor = 0.9
             score -= 7
-            if hangState == 6 {
-                endGame("You lost")
+            if hangState == 6 && !portal{
+                guessWord()
+                generatePortal()
             }
             else {
                 guessedLetters.append(contacted.text!)
+                lblGuessed.text?.append(contacted.text!)
+                lblGuessed.text?.append(" ,")
                 changeChoices()
             }
             
         }
         
+    }
+    
+    func guessWord(){
+        let wordUsed = data[choice].word
+        var index = wordUsed.startIndex
+        while index != wordUsed.endIndex {
+            let str = String(wordUsed[index])
+            while (childNode(withName: str) != nil) {
+                let label = childNode(withName: str) as! SKLabelNode
+                label.text = str + " "
+                label.name = "0"
+            }
+            index = wordUsed.index(after: index)
+        }
+        
+        let explanation = SKLabelNode(text: "The word was")
+        explanation.position = CGPoint(x: -200, y: frame.maxY - 50)
+        explanation.fontSize = 40
+        explanation.zPosition = 100
+        addChild(explanation)
+        
+    }
+    
+    func generatePortal(){
+        exitPortal.size = CGSize(width: exitPortal.size.width * 1.5, height: exitPortal.size.height * 1.5)
+        exitPortal.position = CGPoint(x: frame.midX - 5, y: frame.maxY + 150)
+        exitPortal.zPosition = 100
+        exitPortal.name = "exit"
+        exitPortal.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 20, height: 50))
+        exitPortal.physicsBody?.categoryBitMask = CollisionType.box.rawValue
+        exitPortal.physicsBody?.collisionBitMask = CollisionType.pinclet.rawValue
+        exitPortal.physicsBody?.contactTestBitMask = CollisionType.pinclet.rawValue
+        exitPortal.physicsBody?.affectedByGravity = false
+        addChild(exitPortal)
+        exitPortal.run(SKAction.move(to: CGPoint(x: frame.midX - 5, y: frame.minY + exitPortal.frame.height / 2), duration: 3))
+        portal = true
     }
     
     //MARK: endGame
