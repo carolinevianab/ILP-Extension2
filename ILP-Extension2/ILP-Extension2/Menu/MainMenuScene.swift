@@ -12,12 +12,14 @@ class MainMenuScene: SKScene {
     let defalts = UserDefaults.standard
     
     var bntStart: SKLabelNode!
+    var bntButton: SKSpriteNode!
     var score: SKLabelNode!
     var touchLocal = CGPoint(x: 0, y: 0)
     
     override func didMove(to view: SKView) {
         bntStart = (self.childNode(withName: "StartGame") as! SKLabelNode)
         score = (self.childNode(withName: "Score") as! SKLabelNode)
+        bntButton = (self.childNode(withName: "bntStartGame") as! SKSpriteNode)
         
         score.text = "Last Score: " + String(defalts.integer(forKey: "Score"))
     }
@@ -26,7 +28,7 @@ class MainMenuScene: SKScene {
         guard let touch = touches.first else {return}
         touchLocal = touch.location(in: self)
         
-        if bntStart.contains(touchLocal) {
+        if bntStart.contains(touchLocal) || bntButton.contains(touchLocal) {
             let transition = SKTransition.flipHorizontal(withDuration: 0.5)
             let intoGame = GameScene(fileNamed: "GameScene") ?? GameScene(size: self.size)
             self.view?.presentScene(intoGame, transition: transition)

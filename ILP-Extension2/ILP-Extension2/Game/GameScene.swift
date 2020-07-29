@@ -8,18 +8,6 @@
 
 import SpriteKit
 
-enum CollisionType: UInt32{
-    case ground = 1
-    case pinclet = 2
-    case box = 4
-}
-
-struct wordlist {
-    var word: String
-    var letterNumber: Int
-}
-
-
 class GameScene: SKScene, SKPhysicsContactDelegate {
     let defalts = UserDefaults.standard
     
@@ -56,7 +44,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var portal = false
     
     let states = [SKTexture(imageNamed: "0"), SKTexture(imageNamed: "1"), SKTexture(imageNamed: "2"), SKTexture(imageNamed: "3"), SKTexture(imageNamed: "4"), SKTexture(imageNamed: "5"), SKTexture(imageNamed: "6")]
-    
 
     // MARK: didMove
     override func didMove(to view: SKView) {
@@ -84,7 +71,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         pinclet.size = CGSize(width: pinclet.size.width / 1.5, height: pinclet.size.height / 1.5)
         pinclet.position = CGPoint(x: 0, y: -115)
-        pinclet.zPosition = 3
+        pinclet.zPosition = Zpositions.gameArea.rawValue
         pinclet.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: pinclet.size.width / 2, height: pinclet.size.height / 1.2))
         pinclet.physicsBody?.categoryBitMask = CollisionType.pinclet.rawValue
         pinclet.physicsBody?.collisionBitMask = CollisionType.box.rawValue
@@ -94,7 +81,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         pinclet.physicsBody?.mass = 1
         pinclet.physicsBody?.friction = 0.1
         addChild(pinclet)
-        
         
          data = [wordlist(word: "APARTMENT", letterNumber: 9),//1
                  wordlist(word: "AIRPLANE", letterNumber: 8),//2
@@ -187,14 +173,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let a = data[choice].letterNumber
         
         var i = 0
-        var position = CGPoint(x: -375, y: 81)
+        var position = CGPoint(x: -400, y: 81)
         var h = data[choice].word.startIndex
+        
         while i < a {
             i+=1
-            
             let label = SKLabelNode(text: "_ ")
             label.position = position
-            label.zPosition = 100
+            label.zPosition = Zpositions.labels.rawValue
             label.fontSize = 77
             label.name = String(data[choice].word[h])
             addChild(label)
@@ -203,9 +189,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         defineLetters()
-        
     }
-    
     
     //MARK: ChangeChoices
     func changeChoices(){
@@ -370,6 +354,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Ordem alfabética:
         //Scene (literally)
         //bntX
+        //exit
         //lblbntX
         //pinclet
         
@@ -465,6 +450,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+    //MARK: guessWord
     func guessWord(){
         let wordUsed = data[choice].word
         var index = wordUsed.startIndex
@@ -481,15 +467,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let explanation = SKLabelNode(text: "The word was")
         explanation.position = CGPoint(x: -200, y: frame.maxY - 50)
         explanation.fontSize = 40
-        explanation.zPosition = 100
+        explanation.zPosition = Zpositions.labels.rawValue
         addChild(explanation)
         
     }
     
+    //MARK: generatePortal
     func generatePortal(){
         exitPortal.size = CGSize(width: exitPortal.size.width * 1.5, height: exitPortal.size.height * 1.5)
         exitPortal.position = CGPoint(x: frame.midX - 5, y: frame.maxY + 150)
-        exitPortal.zPosition = 100
+        exitPortal.zPosition = Zpositions.gameArea.rawValue + 1
         exitPortal.name = "exit"
         exitPortal.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 20, height: 50))
         exitPortal.physicsBody?.categoryBitMask = CollisionType.box.rawValue
@@ -505,7 +492,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func endGame(_ GameStatus: String){
         let label = SKLabelNode(text: GameStatus)
         label.position = CGPoint(x: 200, y: -100)
-        label.zPosition = 100
+        label.zPosition = Zpositions.labels.rawValue
         label.fontSize = 100
         label.fontName = "Helvetica Neue"
         label.name = "State"
