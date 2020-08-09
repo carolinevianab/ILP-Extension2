@@ -82,6 +82,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         pinclet.physicsBody?.friction = 0.1
         addChild(pinclet)
         
+        let tutorial = SKLabelNode(text: "Tap a letter to guess the word.")
+        tutorial.fontColor = .black
+        tutorial.position = CGPoint(x: frame.midX, y: frame.midY - 60)
+        tutorial.zPosition = Zpositions.labels.rawValue
+        tutorial.name = "tutorial"
+        addChild(tutorial)
+        
          data = [wordlist(word: "APARTMENT", letterNumber: 9),//1
                  wordlist(word: "AIRPLANE", letterNumber: 8),//2
                  wordlist(word: "RESTAURANT", letterNumber: 10),//3
@@ -305,6 +312,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else {return}
         touchLocal = touch.location(in: self)
+        
+        if childNode(withName: "tutorial") != nil {
+            childNode(withName: "tutorial")?.removeFromParent()
+        }
         
         if lblbnt1.contains(touchLocal) || bnt1.contains(touchLocal){
             movePinclet(lblbnt1)
